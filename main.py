@@ -3,15 +3,21 @@ Do auth, upload and index a video in one go.
 """
 
 import os
-from os import access
+import argparse
 
 from dotenv import load_dotenv
 
-from auth import get_auth_token
+from auth import get_access_token
 from upload import upload_and_index
 
 
 if __name__ == "__main__":
+
+    # Optional filepath arg allows upload of n videos to the same workspace over a short period
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", "-p", required=False, help="File path to the video to upload from your local system")
+    args = parser.parse_args()
+
     load_dotenv()
 
     # Load env variables
@@ -23,11 +29,11 @@ if __name__ == "__main__":
     language = os.getenv("VIDEO_LANGUAGE", default="English")
     success_email = os.getenv("SUCCESS_EMAIL", default="True")
     video_filename = os.getenv("VIDEO_FILENAME")
-    video_filepath = os.getenv("VIDEO_FILEPATH")
+    video_filepath = args.path if args.path else os.getenv("VIDEO_FILEPATH")
     apim_key = os.getenv("APIM_SUBSCRIPTION_KEY")
 
     # Get access token
-    access_token = get_auth_token(location, account_id, apim_key)
+    access_token = get_access_token(location, account_id, apim_key)
     print("Retrieved access token: \n{}".format(access_token))
 
     res = upload_and_index(

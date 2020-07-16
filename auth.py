@@ -3,7 +3,7 @@ import requests
 from dotenv import load_dotenv
 
 
-def get_auth_token(svc_location: str, acct_id: str, apim_key: str) -> str:
+def get_access_token(svc_location: str, acct_id: str, apim_key: str) -> str:
 
     url = """
         https://api.videoindexer.ai/auth/{location}/Accounts/{account_id}/AccessToken?allowEdit=true
@@ -21,7 +21,7 @@ def get_auth_token(svc_location: str, acct_id: str, apim_key: str) -> str:
 if __name__ == "__main__":
   # Run as a separate script if you want.
     load_dotenv()
-    token = get_auth_token(
+    token = get_access_token(
         svc_location=os.getenv("LOCATION"),
         acct_id=os.getenv("ACCOUNT_ID"),
         apim_key=os.getenv("APIM_SUBSCRIPTION_KEY"),

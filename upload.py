@@ -13,7 +13,7 @@ def upload_and_index(
     language: str,
     success_email: str,
     video_filename: str,
-    auth_token: str,
+    access_token: str,
     video_filepath: str,
     apim_key: str,
 ) -> str:
@@ -27,7 +27,7 @@ def upload_and_index(
         "&language={language}"
         "&fileName={video_filename}"
         "&sendSuccessEmail={success_email}"
-        "&accessToken={auth_token}"
+        "&accessToken={access_token}"
     ).format(
         location=svc_location,
         account_id=acct_id,
@@ -37,7 +37,7 @@ def upload_and_index(
         language=language,
         success_email=success_email,
         video_filename=video_filename,
-        auth_token=auth_token,
+        access_token=access_token,
     )
 
     print("\nYour request url:\n{}".format(url))
@@ -46,7 +46,7 @@ def upload_and_index(
 
     headers = {"Ocp-Apim-Subscription-Key": apim_key}
 
-    print("\nUploading...")
+    print("\nUploading video file at: {} ...".format(video_filepath))
     response = requests.post(url, headers=headers, files=files)
 
     if response.status_code == "200":
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     language = os.getenv("VIDEO_LANGUAGE", default="English")
     success_email = os.getenv("SUCCESS_EMAIL", default="True")
     video_filename = os.getenv("VIDEO_FILENAME")
-    auth_token = os.getenv("AUTH_TOKEN")
+    access_token = os.getenv("ACCESS_TOKEN")
     video_filepath = os.getenv("VIDEO_FILEPATH")
     apim_key = os.getenv("APIM_SUBSCRIPTION_KEY")
     
@@ -81,7 +81,7 @@ if __name__ == "__main__":
         language,
         success_email,
         video_filename,
-        auth_token,
+        access_token,
         video_filepath,
         apim_key,
     )
